@@ -38,7 +38,8 @@ done
 AW_PATH=$HOME/.vim-anywhere
 TMPFILE_DIR=/tmp/vim-anywhere
 TMPFILE=$TMPFILE_DIR/doc-$(date +"%y%m%d%H%M%S")
-VIM_OPTS=--nofork
+GVIM_OPTS=--nofork
+VIM_OPTS="-bc 'set noeol'"
 
 # Use ~/.gvimrc.min or ~/.vimrc.min if one exists
 VIMRC_PATH=($HOME/.gvimrc.min $HOME/.vimrc.min)
@@ -56,5 +57,11 @@ touch $TMPFILE
 # Linux
 if [[ $OSTYPE == "linux-gnu" ]]; then
   chmod o-r $TMPFILE # Make file only readable by you
-  gvim $VIM_OPTS $TMPFILE
+  if [[ -n $TERMINAL ]]; then
+    $TERMINAL -e "vim $VIM_OPTS $TMPFILE"
+  else
+    echo -e '$TERMINAL not set, please set it to your terminal emulator\nusing gvim as fallback'
+    gvim $VIM_OPTS $GVIM_OPTS $TMPFILE
+  fi
   cat $TMPFILE | xclip -selection clipboard
+fi

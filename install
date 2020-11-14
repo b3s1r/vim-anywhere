@@ -6,7 +6,7 @@
 #
 # Installs vim-anywhere. Intended for use via curl:
 #
-#   $ curl -fsSL https://raw.github.com/cknadler/vim-anywhere/master/install | bash
+#   $ curl -fsSL https://raw.github.com/b3s1r/vim-anywhere/master/install | bash
 
 set -e
 
@@ -71,7 +71,6 @@ fi
 # Linux specific checks
 if [[ $OSTYPE == "linux-gnu" ]]; then
   require_one_installed gconftool gsettings
-  require_installed gvim
   require_installed xclip
 
 # Unsupported OS
