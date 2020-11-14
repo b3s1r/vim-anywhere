@@ -48,9 +48,4 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
     gsettings reset-recursively $custom_kbd:$kbd_path
   fi
 
-# OSX uninstall
-elif [[ $OSTYPE == "darwin"* ]]; then
-  rm -rf $HOME/Library/Services/VimAnywhere.workflow
-fi
-
 echo "vim-anywhere has been successfully uninstalled!"

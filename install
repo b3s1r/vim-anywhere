@@ -46,7 +46,7 @@ require_one_installed() {
 }
 
 AW_PATH=$HOME/.vim-anywhere
-AW_URL='https://github.com/cknadler/vim-anywhere'
+AW_URL='https://github.com/b3s1r/vim-anywhere'
 
 ###
 # pre-installation checks
@@ -73,10 +73,6 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
   require_one_installed gconftool gsettings
   require_installed gvim
   require_installed xclip
-
-# OSX specific checks
-elif [[ $OSTYPE == "darwin"* ]]; then
-  require_installed mvim 'Run `brew install macvim`.'
 
 # Unsupported OS
 else
@@ -118,28 +114,5 @@ if [[ $OSTYPE == "linux-gnu" ]]; then
     gsettings set $custom_kbd:$kbd_path binding $binding
     gsettings set $custom_kbd:$kbd_path command $action
   fi
-
-# OSX install
-elif [[ $OSTYPE == "darwin"* ]]; then
-  # store the absolute path to the mvim executable
-  which mvim > $AW_PATH/.path
-
-  # install the workflow as a service
-  mkdir -p $HOME/Library/Services
-  cp -R $AW_PATH/VimAnywhere.workflow $HOME/Library/Services
-
-  # Set default keybindings
-  defaults write pbs NSServicesStatus '{
-    "(null) - VimAnywhere - runWorkflowAsService" = {
-      "key_equivalent" = "@^v";
-    };
-    "org.vim.MacVim - MacVim/New MacVim Buffer With Selection - openSelection" = {
-      "key_equivalent" = "@^v";
-    };
-  }'
-
-  # Activating Finder causes the new keybindings to become active
-  osascript -e "activate application \"Finder\""
-fi
 
 echo "vim-anywhere has been successfully installed!"
