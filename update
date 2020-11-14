@@ -46,9 +46,4 @@ pushd $AW_PATH
   [ $? -ne 0 ] && exit 1
 popd
 
-# OSX only
-if [[ $OSTYPE == "darwin"* ]]; then
-  cp -R $AW_PATH/VimAnywhere.workflow $HOME/Library/Services
-fi
-
 echo "vim-anywhere has been successfully updated!"

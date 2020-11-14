@@ -70,7 +70,6 @@ fi
 
 # Linux specific checks
 if [[ $OSTYPE == "linux-gnu" ]]; then
-  require_one_installed gconftool gsettings
   require_installed xclip
 
 # Unsupported OS
@@ -87,31 +86,6 @@ echo "Installing vim-anywhere..."
 
 git clone $AW_URL $AW_PATH
 
-# Linux install
-if [[ $OSTYPE == "linux-gnu" ]]; then
-  name="vim-anywhere"
-  binding="<CTRL><ALT>v"
-  action=$AW_PATH/bin/run
-
-  # We always try gconftool first. It is deprecated so it won't be on newer
-  # installs. If it's installed, we know we are on older versions of Gnome.
-  if check_installed gconftool; then
-    kbd_path=/desktop/gnome/keybindings/vim-anywhere
-    gconftool -t str --set $kbd_path/name $name
-    gconftool -t str --set $kbd_path/binding $binding
-    gconftool -t str --set $kbd_path/action $action
-
-  # At this point, we know we are using dconf, the currently supported settings
-  # manager. gsettings is the gnome client for dconf.
-  else
-    media_keys=org.gnome.settings-daemon.plugins.media-keys
-    custom_kbd=org.gnome.settings-daemon.plugins.media-keys.custom-keybinding
-    kbd_path=/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/vim-anywhere/
-    new_bindings=`gsettings get $media_keys custom-keybindings | sed -e"s>'\]>','$kbd_path']>"| sed -e"s>@as \[\]>['$kbd_path']>"`
-    gsettings set $media_keys custom-keybindings "$new_bindings"
-    gsettings set $custom_kbd:$kbd_path name $name
-    gsettings set $custom_kbd:$kbd_path binding $binding
-    gsettings set $custom_kbd:$kbd_path command $action
-  fi
 
 echo "vim-anywhere has been successfully installed!"
+echo "To use it, add $AW_PATH/bin/run to your PATH and configue a Keybinding un your window manager"
