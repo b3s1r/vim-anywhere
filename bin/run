@@ -37,7 +37,6 @@ done
 
 AW_PATH=$HOME/.vim-anywhere
 TMPFILE_DIR=/tmp/vim-anywhere
-TMPFILE=$TMPFILE_DIR/doc-$(date +"%y%m%d%H%M%S")
 GVIM_OPTS=--nofork
 VIM_OPTS="-bc 'set noeol'"
 
@@ -52,7 +51,11 @@ for vimrc_path in "${VIMRC_PATH[@]}"; do
 done
 
 mkdir -p $TMPFILE_DIR
-touch $TMPFILE
+TMPFILE=$(mktemp -p $TMPFILE_DIR)
+
+if [[ $1 == "primary" ]]; then
+  xclip -o >> $TMPFILE
+fi
 
 # Linux
 if [[ $OSTYPE == "linux-gnu" ]]; then
